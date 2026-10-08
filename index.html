@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sistema de Portaria - IBAMA RJ</title>
+
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Bibliotecas externas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-brand">
+                <div class="splash-logo-box">
+                    <img src="logo-ibama.png" alt="IBAMA" class="splash-logo-ibama">
+                </div>
+                <div class="splash-divider"></div>
+                <div class="splash-system-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12 1.5a.75.75 0 01.75.75v1.86a11.954 11.954 0 015.11 2.028l1.314-1.314a.75.75 0 011.06 1.06l-1.314 1.315a11.95 11.95 0 012.028 5.111h1.86a.75.75 0 010 1.5h-1.86a11.954 11.954 0 01-2.028 5.11l1.314 1.315a.75.75 0 11-1.06 1.06l-1.314-1.314a11.954 11.954 0 01-5.11 2.028v1.86a.75.75 0 01-1.5 0v-1.86a11.954 11.954 0 01-5.11-2.028l-1.315 1.314a.75.75 0 11-1.06-1.06l1.314-1.314a11.95 11.95 0 01-2.028-5.111H1.5a.75.75 0 010-1.5h1.86a11.954 11.954 0 012.028-5.11L4.074 5.389a.75.75 0 011.06-1.06l1.314 1.314A11.954 11.954 0 0111.25 4.11V2.25A.75.75 0 0112 1.5zm0 4.5a6 6 0 100 12 6 6 0 000-12zm0 2.25a3.75 3.75 0 100 7.5 3.75 3.75 0 000-7.5z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+            <div class="splash-text">
+                <span class="splash-overline">SUPERINTENDÊNCIA DO IBAMA - RJ</span>
+                <h1>SISTEMA DE PORTARIA</h1>
+                <p>Controle de acesso e fluxo institucional</p>
+            </div>
+            <div class="splash-loader">
+                <div class="spinner"></div>
+                <div>
+                    <strong>Inicializando sistema</strong>
+                    <span>Conectando ao banco de dados...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="tela-login" class="login-wrapper">
+        <div class="login-background-decoration"></div>
+        <div class="login-card">
+            <div class="login-brand">
+                <div class="login-logo-wrapper">
+                    <img src="logo-ibama.png" alt="Logo IBAMA" class="login-logo">
+                </div>
+                <div class="login-institution">
+                    <strong>IBAMA</strong>
+                    <span>Superintendência do Rio de Janeiro</span>
+                </div>
+            </div>
+            <div class="login-header">
+                <span class="login-label">ACESSO RESTRITO</span>
+                <h1>Controle de Portaria</h1>
+                <p>Entre com suas credenciais para acessar o sistema.</p>
+            </div>
+
+            <form id="form-login" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">✉</span>
+                        <input type="email" id="email" required placeholder="seu.email@ibama.gov.br" autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="senha" required placeholder="Digite sua senha" autocomplete="current-password">
+                    </div>
+                </div>
+
+                <button type="submit" id="btn-login-submit" class="btn-primary btn-login">
+                    <span>Entrar no Sistema</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <span class="security-dot"></span>
+                <span>Ambiente institucional protegido</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAINEL PRINCIPAL -->
+    <div id="painel-principal" class="app-shell">
+
+        <header class="top-header">
+            <div class="header-brand">
+                <div class="header-logo-wrapper">
+                    <img src="logo-ibama.png" alt="IBAMA">
+                </div>
+                <div class="header-title">
+                    <span>IBAMA • RIO DE JANEIRO</span>
+                    <h1>Sistema de Portaria</h1>
+                    <p>Controle de acesso e fluxo institucional</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="system-status">
+                    <span class="status-indicator"></span>
+                    <div>
+                        <strong>Sistema Online</strong>
+                        <small>Banco conectado</small>
+                    </div>
+                </div>
+                <button onclick="fazerLogout()" class="btn-logout">
+                    <span>↪</span>
+                    <span>Sair</span>
+                </button>
+            </div>
+        </header>
+
+        <nav class="nav-bar">
+            <div class="nav-inner">
+                <button class="btn-nav ativo-verde" onclick="mudarAba('visitantes', this, 'verde')">
+                    <span class="nav-icon">🏢</span>
+                    <span class="nav-text">Visitantes</span>
+                </button>
+                <button class="btn-nav" onclick="mudarAba('manutencao', this, 'laranja')">
+                    <span class="nav-icon">🛠</span>
+                    <span class="nav-text">Manutenção Predial</span>
+                </button>
+                <button class="btn-nav" onclick="mudarAba('dashboard', this, 'verde')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+                <button class="btn-nav" onclick="mudarAba('relatorios', this, 'verde')">
+                    <span class="nav-icon">📄</span>
+                    <span class="nav-text">Relatórios</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="container">
+
+            <!-- VISITANTES -->
+            <section id="aba-visitantes" class="painel-secao ativo">
+                <div class="section-heading">
+                    <div>
+                        <span class="section-overline">CONTROLE DE ACESSO</span>
+                        <h2>Controle de Visitantes</h2>
+                        <p>Registre e acompanhe o fluxo de visitantes no prédio.</p>
+                    </div>
+                    <div class="section-status">
+                        <span class="status-indicator"></span>
+                        Controle em tempo real
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <!-- FORMULÁRIO VISITANTE -->
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <div class="card-icon green">+</div>
+                            <div>
+                                <h3>Registrar Visitante</h3>
+                                <p>Cadastre uma nova entrada</p>
+                            </div>
+                        </div>
+
+                        <form id="form-visitante" onsubmit="return false;">
+                            <div class="form-group">
+                                <label for="v-nome">Nome Completo <span>*</span></label>
+                                <input type="text" id="v-nome" required placeholder="Digite o nome completo">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="v-documento">Documento <span>*</span></label>
+                                <input type="text" id="v-documento" required placeholder="CPF ou RG">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="v-setor">Setor de Destino <span>*</span></label>
+                                <select id="v-setor" required>
+                                    <option value="">Selecione o setor...</option>
+                                    <option value="NQA-RJ (Cadastro)">NQA-RJ (Cadastro)</option>
+                                    <option value="EINFO">EINFO (TI)</option>
+                                    <option value="EAGEP-RJ (RH)">EAGEP-RJ (RH)</option>
+                                    <option value="EARRE-RJ (Arrecadação)">EARRE-RJ (Arrecadação)</option>
+                                    <option value="EDOC-RJ (Protocolo)">EDOC-RJ (Protocolo)</option>
+                                    <option value="DIPAM-RJ (Anilhas/Fiscalização)">DIPAM-RJ</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="v-atividade">Atividade / Motivo</label>
+                                <input type="text" id="v-atividade" placeholder="Ex.: Reunião, entrega de documento...">
+                            </div>
+
+                            <button type="button" id="btn-submit-visitante" class="btn-primary btn-form">
+                                <span>Registrar Entrada</span>
+                                <span>→</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- VISITANTES ATIVOS -->
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <div class="card-icon green">✓</div>
+                            <div>
+                                <h3>Visitantes no Prédio</h3>
+                                <p>Pessoas atualmente registradas</p>
+                            </div>
+                            <div class="live-badge">
+                                <span></span>
+                                AO VIVO
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Setor</th>
+                                        <th>Atividade</th>
+                                        <th>Entrada</th>
+                                        <th class="th-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-visitantes-ativos"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HISTÓRICO -->
+                <div class="card history-card">
+                    <div class="card-header">
+                        <div class="card-icon blue">↔</div>
+                        <div>
+                            <h3>Últimas Movimentações</h3>
+                            <p>Histórico recente de visitantes</p>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Setor</th>
+                                    <th>Atividade</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-visitantes-historico"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MANUTENÇÃO -->
+            <section id="aba-manutencao" class="painel-secao">
+                <div class="section-heading">
+                    <div>
+                        <span class="section-overline orange">CONTROLE DE SERVIÇOS</span>
+                        <h2>Manutenção Predial</h2>
+                        <p>Controle de prestadores e serviços realizados no prédio.</p>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <div class="card-icon orange">+</div>
+                            <div>
+                                <h3>Registrar Prestador</h3>
+                                <p>Cadastre uma nova entrada de serviço</p>
+                            </div>
+                        </div>
+
+                        <form id="form-manutencao" onsubmit="return false;">
+                            <div class="form-group">
+                                <label for="m-nome">Nome do Prestador <span>*</span></label>
+                                <input type="text" id="m-nome" required placeholder="Nome do técnico ou prestador">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="m-documento">Documento <span>*</span></label>
+                                <input type="text" id="m-documento" required placeholder="CPF ou RG">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="m-empresa">Empresa / Terceirizada <span>*</span></label>
+                                <input type="text" id="m-empresa" required placeholder="Nome da empresa">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="m-atividade">Serviço / Atividade</label>
+                                <input type="text" id="m-atividade" placeholder="Ex.: Elétrica, climatização...">
+                            </div>
+
+                            <button type="button" id="btn-submit-manutencao" class="btn-primary btn-laranja btn-form">
+                                <span>Registrar Entrada</span>
+                                <span>→</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <div class="card-icon orange">✓</div>
+                            <div>
+                                <h3>Prestadores no Prédio</h3>
+                                <p>Prestadores atualmente ativos</p>
+                            </div>
+                            <div class="live-badge orange">
+                                <span></span>
+                                AO VIVO
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Empresa</th>
+                                        <th>Atividade</th>
+                                        <th>Entrada</th>
+                                        <th class="th-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-prestadores-ativos"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card history-card">
+                    <div class="card-header">
+                        <div class="card-icon orange">↔</div>
+                        <div>
+                            <h3>Últimas Movimentações</h3>
+                            <p>Histórico de manutenção predial</p>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Empresa</th>
+                                    <th>Atividade</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-prestadores-historico"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DASHBOARD -->
+            <section id="aba-dashboard" class="painel-secao">
+                <div class="section-heading">
+                    <div>
+                        <span class="section-overline">VISÃO GERAL</span>
+                        <h2>Dashboard & Indicadores</h2>
+                        <p>Acompanhe o fluxo de acesso da unidade em tempo real.</p>
+                    </div>
+                </div>
+
+                <div class="grid-3 dashboard-cards">
+                    <div class="card card-dash border-verde">
+                        <div class="dash-icon green">👤</div>
+                        <div class="dash-content">
+                            <span>VISITANTES</span>
+                            <strong id="dash-v-ativos" class="dash-valor color-verde">0</strong>
+                            <small>Atualmente no prédio</small>
+                        </div>
+                    </div>
+
+                    <div class="card card-dash border-laranja">
+                        <div class="dash-icon orange">🛠</div>
+                        <div class="dash-content">
+                            <span>PRESTADORES</span>
+                            <strong id="dash-p-ativos" class="dash-valor color-laranja">0</strong>
+                            <small>Atualmente no prédio</small>
+                        </div>
+                    </div>
+
+                    <div class="card card-dash border-azul">
+                        <div class="dash-icon blue">↗</div>
+                        <div class="dash-content">
+                            <span>ACESSOS HOJE</span>
+                            <strong id="dash-total-hoje" class="dash-valor color-azul">0</strong>
+                            <small>Total registrado hoje</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2 dashboard-charts">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3>Acessos por Setor</h3>
+                                <p>Distribuição de visitantes por setor</p>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <canvas id="chartSetores"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <div>
+                                <h3>Fluxo Comparativo do Dia</h3>
+                                <p>Entradas e movimentações registradas</p>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <canvas id="chartFluxo"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RELATÓRIOS -->
+            <section id="aba-relatorios" class="painel-secao">
+                <div class="section-heading">
+                    <div>
+                        <span class="section-overline">CONSULTA E EXPORTAÇÃO</span>
+                        <h2>Relatórios e Histórico</h2>
+                        <p>Consulte registros e gere relatórios em PDF.</p>
+                    </div>
+                </div>
+
+                <div class="card filter-card">
+                    <div class="card-header">
+                        <div class="card-icon blue">☷</div>
+                        <div>
+                            <h3>Filtros de Pesquisa</h3>
+                            <p>Defina os critérios para consultar o histórico</p>
+                        </div>
+                    </div>
+
+                    <div class="filtros-grid">
+                        <div class="form-group">
+                            <label for="filtro-tipo">Tipo de Registro</label>
+                            <select id="filtro-tipo">
+                                <option value="visitantes">Visitantes</option>
+                                <option value="manutencao">Manutenção Predial</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="filtro-mes">Mês</label>
+                            <select id="filtro-mes">
+                                <option value="todos">Todos os meses</option>
+                                <option value="01">Janeiro</option>
+                                <option value="02">Fevereiro</option>
+                                <option value="03">Março</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Maio</option>
+                                <option value="06">Junho</option>
+                                <option value="07">Julho</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="filtro-ano">Ano</label>
+                            <select id="filtro-ano">
+                                <option value="todos">Todos os anos</option>
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="container-filtro-setor">
+                            <label for="filtro-setor">Setor</label>
+                            <select id="filtro-setor">
+                                <option value="todos">Todos os Setores</option>
+                                <option value="NQA-RJ (Cadastro)">NQA-RJ (Cadastro)</option>
+                                <option value="EINFO">EINFO (TI)</option>
+                                <option value="EAGEP-RJ (RH)">EAGEP-RJ (RH)</option>
+                                <option value="EARRE-RJ (Arrecadação)">EARRE-RJ (Arrecadação)</option>
+                                <option value="EDOC-RJ (Protocolo)">EDOC-RJ (Protocolo)</option>
+                                <option value="DIPAM-RJ (Anilhas/Fiscalização)">DIPAM-RJ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button onclick="exportarRelatorioPDF()" class="btn-primary">
+                            <span>↓</span>
+                            <span>Exportar em PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card history-card">
+                    <div class="card-header">
+                        <div class="card-icon blue">≡</div>
+                        <div>
+                            <h3>Resultado do Histórico</h3>
+                            <p>Registros encontrados conforme os filtros</p>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr id="cabecalho-tabela-relatorio">
+                                    <th>Nome</th>
+                                    <th>Documento</th>
+                                    <th>Setor/Empresa</th>
+                                    <th>Atividade</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-historico-filtrado"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="app-footer">
+            <span>Sistema de Portaria • IBAMA - Superintendência do Rio de Janeiro</span>
+            <span>Controle institucional de acesso</span>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript do sistema -->
+    <script src="app.js"></script>
+
+</body>
+</html>
