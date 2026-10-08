@@ -98,8 +98,8 @@
         </div>
     </div>
 
-    <!-- PAINEL PRINCIPAL -->
-    <div id="painel-principal" class="app-shell">
+    <!-- PAINEL PRINCIPAL (OCULTO POR PADRÃO ATÉ O LOGIN) -->
+    <div id="painel-principal" class="app-shell" style="display: none;">
 
         <header class="top-header">
             <div class="header-brand">
@@ -506,57 +506,4 @@
                                 <option value="EAGEP-RJ (RH)">EAGEP-RJ (RH)</option>
                                 <option value="EARRE-RJ (Arrecadação)">EARRE-RJ (Arrecadação)</option>
                                 <option value="EDOC-RJ (Protocolo)">EDOC-RJ (Protocolo)</option>
-                                <option value="DIPAM-RJ (Anilhas/Fiscalização)">DIPAM-RJ</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="filter-actions">
-                        <button onclick="exportarRelatorioPDF()" class="btn-primary">
-                            <span>↓</span>
-                            <span>Exportar em PDF</span>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="card history-card">
-                    <div class="card-header">
-                        <div class="card-icon blue">≡</div>
-                        <div>
-                            <h3>Resultado do Histórico</h3>
-                            <p>Registros encontrados conforme os filtros</p>
-                        </div>
-                    </div>
-
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr id="cabecalho-tabela-relatorio">
-                                    <th>Nome</th>
-                                    <th>Documento</th>
-                                    <th>Setor/Empresa</th>
-                                    <th>Atividade</th>
-                                    <th>Entrada</th>
-                                    <th>Saída</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabela-historico-filtrado"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-        </main>
-
-        <footer class="app-footer">
-            <span>Sistema de Portaria • IBAMA - Superintendência do Rio de Janeiro</span>
-            <span>Controle institucional de acesso</span>
-        </footer>
-
-    </div>
-
-    <!-- JavaScript do sistema -->
-    <script src="app.js"></script>
-
-</body>
-</html>
+                                <option value="DIPAM-RJ (
