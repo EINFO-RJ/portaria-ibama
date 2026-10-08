@@ -15,14 +15,21 @@ function esconderSplashScreen() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // Oculta a tela de carregamento (Splash Screen) imediatamente
+  setTimeout(esconderSplashScreen, 500);
+
   const loginScreen = document.getElementById('tela-login');
   const mainApp = document.getElementById('painel-principal');
 
-  // Garante estado inicial (Apenas Login Visível)
+  // Garante estado inicial
   if (sessionStorage.getItem('usuario_logado')) {
     if (loginScreen) loginScreen.style.display = 'none';
     if (mainApp) mainApp.style.display = 'block';
-    await Promise.all([carregarVisitantes(), carregarPrestadores()]);
+    try {
+      await Promise.all([carregarVisitantes(), carregarPrestadores()]);
+    } catch (err) {
+      console.error('Erro ao carregar dados iniciais:', err);
+    }
   } else {
     if (loginScreen) loginScreen.style.display = 'flex';
     if (mainApp) mainApp.style.display = 'none';
@@ -45,6 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('filtro-mes')?.addEventListener('change', carregarRelatorios);
   document.getElementById('filtro-ano')?.addEventListener('change', carregarRelatorios);
   document.getElementById('filtro-setor')?.addEventListener('change', carregarRelatorios);
+});
 
   setTimeout(esconderSplashScreen, 800);
 });
