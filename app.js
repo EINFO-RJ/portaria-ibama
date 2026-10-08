@@ -15,10 +15,17 @@ function esconderSplashScreen() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const loginScreen = document.getElementById('tela-login');
+  const mainApp = document.getElementById('painel-principal');
+
+  // Garante estado inicial (Apenas Login Visível)
   if (sessionStorage.getItem('usuario_logado')) {
-    document.getElementById('tela-login').style.display = 'none';
-    document.getElementById('painel-principal').style.display = 'block';
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (mainApp) mainApp.style.display = 'block';
     await Promise.all([carregarVisitantes(), carregarPrestadores()]);
+  } else {
+    if (loginScreen) loginScreen.style.display = 'flex';
+    if (mainApp) mainApp.style.display = 'none';
   }
 
   // Login
@@ -29,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('form-visitante')?.addEventListener('submit', registrarVisitante);
   document.getElementById('btn-submit-visitante')?.addEventListener('click', registrarVisitante);
   
-  // Manutenção Predial (Ajustado para IDs do HTML)
+  // Manutenção Predial
   document.getElementById('form-manutencao')?.addEventListener('submit', registrarPrestador);
   document.getElementById('btn-submit-manutencao')?.addEventListener('click', registrarPrestador);
   
@@ -99,8 +106,13 @@ async function realizarLogin(e) {
 
     if (res.ok && (data.success || data.user)) {
       sessionStorage.setItem('usuario_logado', JSON.stringify(data.user || { email }));
-      document.getElementById('tela-login').style.display = 'none';
-      document.getElementById('painel-principal').style.display = 'block';
+      
+      // Oculta tela de login e exibe o sistema principal
+      const loginScreen = document.getElementById('tela-login');
+      const mainApp = document.getElementById('painel-principal');
+      if (loginScreen) loginScreen.style.display = 'none';
+      if (mainApp) mainApp.style.display = 'block';
+
       await Promise.all([carregarVisitantes(), carregarPrestadores()]);
     } else {
       alert(data.message || 'Credenciais inválidas!');
@@ -113,8 +125,12 @@ async function realizarLogin(e) {
 
 function fazerLogout() {
   sessionStorage.removeItem('usuario_logado');
-  document.getElementById('painel-principal').style.display = 'none';
-  document.getElementById('tela-login').style.display = 'flex';
+  const loginScreen = document.getElementById('tela-login');
+  const mainApp = document.getElementById('painel-principal');
+
+  if (mainApp) mainApp.style.display = 'none';
+  if (loginScreen) loginScreen.style.display = 'flex';
+  
   document.getElementById('form-login')?.reset();
 }
 
@@ -207,7 +223,6 @@ async function registrarVisitante(e) {
 
   if (btnSubmit && btnSubmit.disabled) return;
 
-  // CORRIGIDO: id="v-documento" conforme o index.html
   const nome = document.getElementById('v-nome')?.value.trim();
   const documento = document.getElementById('v-documento')?.value.trim();
   const setor = document.getElementById('v-setor')?.value;
@@ -343,13 +358,11 @@ async function carregarPrestadores() {
 async function registrarPrestador(e) {
   if (e) e.preventDefault();
 
-  // CORRIGIDO: id="form-manutencao" conforme index.html
   const form = document.getElementById('form-manutencao');
   const btnSubmit = document.getElementById('btn-submit-manutencao') || form?.querySelector('button');
 
   if (btnSubmit && btnSubmit.disabled) return;
 
-  // CORRIGIDO: IDs "m-nome", "m-documento", "m-empresa", "m-atividade" conforme index.html
   const nome = document.getElementById('m-nome')?.value.trim();
   const documento = document.getElementById('m-documento')?.value.trim();
   const empresa = document.getElementById('m-empresa')?.value.trim();
