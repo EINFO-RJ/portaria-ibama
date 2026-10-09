@@ -788,35 +788,35 @@ th {
    23. CORREÇÃO DEFINITIVA DE ALINHAMENTO DAS TABELAS
    ========================================================================== */
 
-/* Tabela de 5 colunas (Visitantes no Prédio: Nome, Setor, Atividade, Entrada, Ações) */
-#tabela-visitantes-ativos tr th:nth-child(1), #tabela-visitantes-ativos tr td:nth-child(1),
-#tabela-prestadores-ativos tr th:nth-child(1), #tabela-prestadores-ativos tr td:nth-child(1) { width: 22%; }
+/* Alinhamento para a tabela de Ativos (5 colunas: Nome, Setor, Atividade, Entrada, Ações) */
+#tabela-visitantes-ativos th:nth-child(1), #tabela-visitantes-ativos td:nth-child(1),
+#tabela-prestadores-ativos th:nth-child(1), #tabela-prestadores-ativos td:nth-child(1) { width: 22%; }
 
-#tabela-visitantes-ativos tr th:nth-child(2), #tabela-visitantes-ativos tr td:nth-child(2),
-#tabela-prestadores-ativos tr th:nth-child(2), #tabela-prestadores-ativos tr td:nth-child(2) { width: 20%; }
+#tabela-visitantes-ativos th:nth-child(2), #tabela-visitantes-ativos td:nth-child(2),
+#tabela-prestadores-ativos th:nth-child(2), #tabela-prestadores-ativos td:nth-child(2) { width: 20%; }
 
-#tabela-visitantes-ativos tr th:nth-child(3), #tabela-visitantes-ativos tr td:nth-child(3),
-#tabela-prestadores-ativos tr th:nth-child(3), #tabela-prestadores-ativos tr td:nth-child(3) { width: 23%; }
+#tabela-visitantes-ativos th:nth-child(3), #tabela-visitantes-ativos td:nth-child(3),
+#tabela-prestadores-ativos th:nth-child(3), #tabela-prestadores-ativos td:nth-child(3) { width: 23%; }
 
-#tabela-visitantes-ativos tr th:nth-child(4), #tabela-visitantes-ativos tr td:nth-child(4),
-#tabela-prestadores-ativos tr th:nth-child(4), #tabela-prestadores-ativos tr td:nth-child(4) { width: 20%; }
+#tabela-visitantes-ativos th:nth-child(4), #tabela-visitantes-ativos td:nth-child(4),
+#tabela-prestadores-ativos th:nth-child(4), #tabela-prestadores-ativos td:nth-child(4) { width: 20%; }
 
-#tabela-visitantes-ativos tr th:nth-child(5), #tabela-visitantes-ativos tr td:nth-child(5),
-#tabela-prestadores-ativos tr th:nth-child(5), #tabela-prestadores-ativos tr td:nth-child(5) { width: 15%; text-align: center; }
+#tabela-visitantes-ativos th:nth-child(5), #tabela-visitantes-ativos td:nth-child(5),
+#tabela-prestadores-ativos th:nth-child(5), #tabela-prestadores-ativos td:nth-child(5) { width: 15%; text-align: center; }
 
 
-/* Tabela de Histórico / Últimas Movimentações (5 colunas sem botão de Ações: Nome, Setor/Empresa, Atividade, Entrada, Saída) */
-#tabela-visitantes-historico tr th:nth-child(1), #tabela-visitantes-historico tr td:nth-child(1),
-#tabela-prestadores-historico tr th:nth-child(1), #tabela-prestadores-historico tr td:nth-child(1) { width: 24%; }
+/* Alinhamento para a tabela de Histórico / Últimas Movimentações (5 colunas: Nome, Setor/Empresa, Atividade, Entrada, Saída) */
+#tabela-visitantes-historico th:nth-child(1), #tabela-visitantes-historico td:nth-child(1),
+#tabela-prestadores-historico th:nth-child(1), #tabela-prestadores-historico td:nth-child(1) { width: 24%; }
 
-#tabela-visitantes-historico tr th:nth-child(2), #tabela-visitantes-historico tr td:nth-child(2),
-#tabela-prestadores-historico tr th:nth-child(2), #tabela-prestadores-historico tr td:nth-child(2) { width: 22%; }
+#tabela-visitantes-historico th:nth-child(2), #tabela-visitantes-historico td:nth-child(2),
+#tabela-prestadores-historico th:nth-child(2), #tabela-prestadores-historico td:nth-child(2) { width: 22%; }
 
-#tabela-visitantes-historico tr th:nth-child(3), #tabela-visitantes-historico tr td:nth-child(3),
-#tabela-prestadores-historico tr th:nth-child(3), #tabela-prestadores-historico tr td:nth-child(3) { width: 24%; }
+#tabela-visitantes-historico th:nth-child(3), #tabela-visitantes-historico td:nth-child(3),
+#tabela-prestadores-historico th:nth-child(3), #tabela-prestadores-historico td:nth-child(3) { width: 24%; }
 
-#tabela-visitantes-historico tr th:nth-child(4), #tabela-visitantes-historico tr td:nth-child(4),
-#tabela-prestadores-historico tr th:nth-child(4), #tabela-prestadores-historico tr td:nth-child(4) { width: 18%; }
+#tabela-visitantes-historico th:nth-child(4), #tabela-visitantes-historico td:nth-child(4),
+#tabela-prestadores-historico th:nth-child(4), #tabela-prestadores-historico td:nth-child(4) { width: 18%; }
 
-#tabela-visitantes-historico tr th:nth-child(5), #tabela-visitantes-historico tr td:nth-child(5),
-#tabela-prestadores-historico tr th:nth-child(5), #tabela-prestadores-historico tr td:nth-child(5) { width: 12%; }
+#tabela-visitantes-historico th:nth-child(5), #tabela-visitantes-historico td:nth-child(5),
+#tabela-prestadores-historico th:nth-child(5), #tabela-prestadores-historico td:nth-child(5) { width: 12%; }
