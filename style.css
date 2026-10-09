@@ -2064,3 +2064,13 @@ select:focus-visible {
     }
 
 }
+
+/* ==========================================================================
+   21. ANIMAÇÃO DE OCULTAÇÃO DO SPLASH SCREEN
+   ========================================================================== */
+
+#splash-screen.oculto {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
