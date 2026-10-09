@@ -15,13 +15,11 @@ function esconderSplashScreen() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Esconde o splash screen instantaneamente ao carregar a página
   esconderSplashScreen();
 
   const loginScreen = document.getElementById('tela-login');
   const mainApp = document.getElementById('painel-principal');
 
-  // Verifica estado da sessão
   if (sessionStorage.getItem('usuario_logado')) {
     if (loginScreen) loginScreen.style.display = 'none';
     if (mainApp) mainApp.style.display = 'block';
@@ -95,6 +93,115 @@ function extrairMesEAno(strData) {
   }
 
   return { mes: null, ano: null };
+}
+
+// ---------------- LÓGICA DA JANELA MODAL MANUAL ----------------
+function abrirModalManual(tipo) {
+  const modal = document.getElementById('modal-manual');
+  const modalTipo = document.getElementById('modal-tipo');
+  const modalTitulo = document.getElementById('modal-titulo');
+
+  const groupSetor = document.getElementById('group-modal-setor');
+  const groupEmpresa = document.getElementById('group-modal-empresa');
+  const inputSetor = document.getElementById('modal-setor');
+  const inputEmpresa = document.getElementById('modal-empresa');
+
+  modalTipo.value = tipo;
+
+  if (tipo === 'visitante') {
+    modalTitulo.innerText = 'Registro Manual de Visitante';
+    groupSetor.style.display = 'block';
+    groupEmpresa.style.display = 'none';
+    inputSetor.required = true;
+    inputEmpresa.required = false;
+  } else {
+    modalTitulo.innerText = 'Registro Manual de Manutenção Predial';
+    groupSetor.style.display = 'none';
+    groupEmpresa.style.display = 'block';
+    inputSetor.required = false;
+    inputEmpresa.required = true;
+  }
+
+  document.getElementById('form-manual').reset();
+  modal.style.display = 'flex';
+}
+
+function fecharModalManual() {
+  document.getElementById('modal-manual').style.display = 'none';
+}
+
+async function salvarRegistroManual(e) {
+  if (e) e.preventDefault();
+
+  const tipo = document.getElementById('modal-tipo').value;
+  const nome = document.getElementById('modal-nome').value.trim();
+  const documento = document.getElementById('modal-documento').value.trim();
+  const atividade = document.getElementById('modal-atividade').value.trim();
+  const entradaInput = document.getElementById('modal-entrada').value;
+  const saidaInput = document.getElementById('modal-saida').value;
+
+  const btnSalvar = document.getElementById('btn-salvar-modal');
+
+  if (!nome || !documento || !entradaInput) {
+    alert('Preencha os campos obrigatórios!');
+    return;
+  }
+
+  btnSalvar.disabled = true;
+
+  const dataEntradaFinal = formatarDataHoraInput(entradaInput);
+  const dataSaidaFinal = formatarDataHoraInput(saidaInput);
+
+  if (tipo === 'visitante') {
+    const setor = document.getElementById('modal-setor').value;
+    if (!setor) {
+      alert('Selecione o setor de destino!');
+      btnSalvar.disabled = false;
+      return;
+    }
+
+    const { error } = await _supabase.from('visitantes').insert([{
+      nome,
+      documento,
+      setor,
+      setor_destino: setor,
+      atividade,
+      data_entrada: dataEntradaFinal,
+      data_saida: dataSaidaFinal
+    }]);
+
+    if (!error) {
+      fecharModalManual();
+      await carregarVisitantes();
+    } else {
+      alert(`Erro ao registrar: ${error.message}`);
+    }
+  } else {
+    const empresa = document.getElementById('modal-empresa').value.trim();
+    if (!empresa) {
+      alert('Preencha o nome da empresa!');
+      btnSalvar.disabled = false;
+      return;
+    }
+
+    const { error } = await _supabase.from('manutencao').insert([{
+      nome,
+      documento,
+      empresa,
+      atividade,
+      data_entrada: dataEntradaFinal,
+      data_saida: dataSaidaFinal
+    }]);
+
+    if (!error) {
+      fecharModalManual();
+      await carregarPrestadores();
+    } else {
+      alert(`Erro ao registrar: ${error.message}`);
+    }
+  }
+
+  btnSalvar.disabled = false;
 }
 
 // ---------------- AUTENTICAÇÃO (SUPABASE) ----------------
@@ -235,10 +342,6 @@ async function registrarVisitante(e) {
   const setor = document.getElementById('v-setor')?.value;
   const atividade = document.getElementById('v-atividade')?.value.trim();
 
-  // Captura dos horários manuais
-  const entradaInput = document.getElementById('v-entrada-manual')?.value;
-  const saidaInput = document.getElementById('v-saida-manual')?.value;
-
   if (!nome || !documento || !setor) {
     alert('Preencha os campos obrigatórios!');
     return;
@@ -246,17 +349,14 @@ async function registrarVisitante(e) {
 
   if (btnSubmit) btnSubmit.disabled = true;
 
-  const dataEntradaFinal = formatarDataHoraInput(entradaInput) || getAgoraFormatado();
-  const dataSaidaFinal = formatarDataHoraInput(saidaInput) || null;
-
   const { error } = await _supabase.from('visitantes').insert([{
     nome,
     documento,
     setor,
     setor_destino: setor,
     atividade,
-    data_entrada: dataEntradaFinal,
-    data_saida: dataSaidaFinal
+    data_entrada: getAgoraFormatado(),
+    data_saida: null
   }]);
 
   if (!error) {
@@ -363,10 +463,6 @@ async function registrarPrestador(e) {
   const empresa = document.getElementById('m-empresa')?.value.trim();
   const atividade = document.getElementById('m-atividade')?.value.trim();
 
-  // Captura dos horários manuais
-  const entradaInput = document.getElementById('m-entrada-manual')?.value;
-  const saidaInput = document.getElementById('m-saida-manual')?.value;
-
   if (!nome || !documento || !empresa) {
     alert('Preencha os campos obrigatórios!');
     return;
@@ -374,16 +470,13 @@ async function registrarPrestador(e) {
 
   if (btnSubmit) btnSubmit.disabled = true;
 
-  const dataEntradaFinal = formatarDataHoraInput(entradaInput) || getAgoraFormatado();
-  const dataSaidaFinal = formatarDataHoraInput(saidaInput) || null;
-
   const { error } = await _supabase.from('manutencao').insert([{
     nome,
     documento,
     empresa,
     atividade,
-    data_entrada: dataEntradaFinal,
-    data_saida: dataSaidaFinal
+    data_entrada: getAgoraFormatado(),
+    data_saida: null
   }]);
 
   if (!error) {
