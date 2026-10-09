@@ -10,14 +10,13 @@ let chartFluxoInst = null;
 function esconderSplashScreen() {
   const splash = document.getElementById('splash-screen');
   if (splash) {
-    splash.classList.add('oculto');
-    setTimeout(() => { splash.style.display = 'none'; }, 600);
+    splash.style.display = 'none';
   }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Esconde o splash screen imediatamente
-  setTimeout(esconderSplashScreen, 500);
+  // Esconde o splash screen instantaneamente ao carregar a página
+  esconderSplashScreen();
 
   const loginScreen = document.getElementById('tela-login');
   const mainApp = document.getElementById('painel-principal');
