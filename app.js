@@ -16,13 +16,13 @@ function esconderSplashScreen() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Oculta a tela de carregamento (Splash Screen) imediatamente
+  // Esconde o splash screen imediatamente
   setTimeout(esconderSplashScreen, 500);
 
   const loginScreen = document.getElementById('tela-login');
   const mainApp = document.getElementById('painel-principal');
 
-  // Garante estado inicial
+  // Verifica estado da sessão
   if (sessionStorage.getItem('usuario_logado')) {
     if (loginScreen) loginScreen.style.display = 'none';
     if (mainApp) mainApp.style.display = 'block';
@@ -36,26 +36,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (mainApp) mainApp.style.display = 'none';
   }
 
-  // Login
+  // Event Listeners
   document.getElementById('form-login')?.addEventListener('submit', realizarLogin);
   document.getElementById('btn-login-submit')?.addEventListener('click', realizarLogin);
 
-  // Visitantes (Submit do Form ou Clique no Botão)
   document.getElementById('form-visitante')?.addEventListener('submit', registrarVisitante);
   document.getElementById('btn-submit-visitante')?.addEventListener('click', registrarVisitante);
   
-  // Manutenção Predial
   document.getElementById('form-manutencao')?.addEventListener('submit', registrarPrestador);
   document.getElementById('btn-submit-manutencao')?.addEventListener('click', registrarPrestador);
   
-  // Relatórios
   document.getElementById('filtro-tipo')?.addEventListener('change', carregarRelatorios);
   document.getElementById('filtro-mes')?.addEventListener('change', carregarRelatorios);
   document.getElementById('filtro-ano')?.addEventListener('change', carregarRelatorios);
   document.getElementById('filtro-setor')?.addEventListener('change', carregarRelatorios);
 });
-
-
 
 function mudarAba(abaId, elemento, cor) {
   document.querySelectorAll('.painel-secao').forEach(el => el.classList.remove('ativo'));
@@ -95,27 +90,35 @@ function extrairMesEAno(strData) {
   return { mes: null, ano: null };
 }
 
-// ---------------- AUTENTICAÇÃO ----------------
+// ---------------- AUTENTICAÇÃO (SUPABASE) ----------------
 async function realizarLogin(e) {
   if (e) e.preventDefault();
   const email = document.getElementById('email')?.value.trim();
   const senha = document.getElementById('senha')?.value.trim();
 
-  if (!email || !senha) return;
+  if (!email || !senha) {
+    alert('Preencha o e-mail e a senha.');
+    return;
+  }
 
   try {
-    const res = await fetch(`${API_URL}/api/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha })
-    });
-    
-    const data = await res.json();
+    // Consulta a tabela "usuarios" no Supabase
+    const { data: usuario, error } = await _supabase
+      .from('usuarios')
+      .select('*')
+      .eq('email', email)
+      .eq('senha', senha)
+      .maybeSingle();
 
-    if (res.ok && (data.success || data.user)) {
-      sessionStorage.setItem('usuario_logado', JSON.stringify(data.user || { email }));
+    if (error) {
+      console.error('Erro na autenticação:', error);
+      alert('Erro ao consultar o banco de dados.');
+      return;
+    }
+
+    if (usuario) {
+      sessionStorage.setItem('usuario_logado', JSON.stringify(usuario));
       
-      // Oculta tela de login e exibe o sistema principal
       const loginScreen = document.getElementById('tela-login');
       const mainApp = document.getElementById('painel-principal');
       if (loginScreen) loginScreen.style.display = 'none';
@@ -123,11 +126,11 @@ async function realizarLogin(e) {
 
       await Promise.all([carregarVisitantes(), carregarPrestadores()]);
     } else {
-      alert(data.message || 'Credenciais inválidas!');
+      alert('Credenciais inválidas! Verifique o e-mail e a senha.');
     }
   } catch (err) {
-    console.error('Erro no login:', err);
-    alert('Erro ao conectar com o servidor. Verifique a conexão.');
+    console.error('Erro no fluxo de login:', err);
+    alert('Erro de conexão com o Supabase.');
   }
 }
 
@@ -142,28 +145,19 @@ function fazerLogout() {
   document.getElementById('form-login')?.reset();
 }
 
-// ---------------- VISITANTES ----------------
+// ---------------- VISITANTES (SUPABASE) ----------------
 async function carregarVisitantes() {
-  let dados = [];
-  try {
-    const res = await fetch(`${API_URL}/api/visitantes`);
-    if (res.ok) dados = await res.json();
-  } catch (err) {
-    console.error('Erro ao carregar visitantes:', err);
+  const { data: dados, error } = await _supabase
+    .from('visitantes')
+    .select('*')
+    .order('id', { ascending: false });
+
+  if (error) {
+    console.error('Erro ao carregar visitantes:', error);
+    return;
   }
 
-  dados = Array.isArray(dados) ? dados : [];
-
-  const dadosUnicos = [];
-  const idsVistos = new Set();
-
-  for (const item of dados) {
-    const chave = item.id ? `id_${item.id}` : `${item.nome}_${item.data_entrada}`;
-    if (!idsVistos.has(chave)) {
-      idsVistos.add(chave);
-      dadosUnicos.push(item);
-    }
-  }
+  const dadosUnicos = dados || [];
 
   const tbodyAtivos = document.getElementById('tabela-visitantes-ativos');
   const tbodyHistorico = document.getElementById('tabela-visitantes-historico');
@@ -172,7 +166,6 @@ async function carregarVisitantes() {
   if (tbodyHistorico) tbodyHistorico.innerHTML = '';
 
   const hoje = new Date().toLocaleDateString('pt-BR');
-
   const ativos = dadosUnicos.filter(v => !v.data_saida);
 
   if (tbodyAtivos) {
@@ -243,7 +236,7 @@ async function registrarVisitante(e) {
 
   if (btnSubmit) btnSubmit.disabled = true;
 
-  const novoVisitante = {
+  const { error } = await _supabase.from('visitantes').insert([{
     nome,
     documento,
     setor,
@@ -251,61 +244,43 @@ async function registrarVisitante(e) {
     atividade,
     data_entrada: getAgoraFormatado(),
     data_saida: null
-  };
+  }]);
 
-  try {
-    const res = await fetch(`${API_URL}/api/visitantes`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(novoVisitante)
-    });
-
-    if (res.ok) {
-      if (form) form.reset();
-      await carregarVisitantes();
-    } else {
-      const errData = await res.json();
-      alert(`Erro: ${errData.error || 'Erro ao cadastrar'}`);
-    }
-  } catch (err) {
-    console.error('Erro ao registrar visitante:', err);
-    alert('Erro de conexão ao registrar visitante.');
-  } finally {
-    if (btnSubmit) btnSubmit.disabled = false;
+  if (!error) {
+    if (form) form.reset();
+    await carregarVisitantes();
+  } else {
+    alert(`Erro ao registrar visitante: ${error.message}`);
   }
+
+  if (btnSubmit) btnSubmit.disabled = false;
 }
 
 async function darSaidaVisitante(id) {
   const horaSaida = getAgoraFormatado();
-  try {
-    const res = await fetch(`${API_URL}/api/visitantes/${id}/saida`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data_saida: horaSaida })
-    });
+  const { error } = await _supabase
+    .from('visitantes')
+    .update({ data_saida: horaSaida })
+    .eq('id', id);
 
-    if (res.ok) {
-      await carregarVisitantes();
-    } else {
-      alert('Erro ao registrar saída do visitante.');
-    }
-  } catch (err) {
-    console.error('Erro ao dar saída no visitante:', err);
-    alert('Erro de conexão ao dar saída.');
+  if (!error) {
+    await carregarVisitantes();
+  } else {
+    alert('Erro ao registrar saída do visitante.');
   }
 }
 
-// ---------------- MANUTENÇÃO PREDIAL ----------------
+// ---------------- MANUTENÇÃO PREDIAL (SUPABASE) ----------------
 async function carregarPrestadores() {
-  let dados = [];
-  try {
-    const res = await fetch(`${API_URL}/api/manutencao`);
-    if (res.ok) dados = await res.json();
-  } catch (err) {
-    console.error('Erro ao carregar prestadores:', err);
-  }
+  const { data: dados, error } = await _supabase
+    .from('manutencao')
+    .select('*')
+    .order('id', { ascending: false });
 
-  dados = Array.isArray(dados) ? dados : [];
+  if (error) {
+    console.error('Erro ao carregar prestadores:', error);
+    return;
+  }
 
   const tbodyAtivos = document.getElementById('tabela-prestadores-ativos');
   const tbodyHistorico = document.getElementById('tabela-prestadores-historico');
@@ -314,8 +289,7 @@ async function carregarPrestadores() {
   if (tbodyHistorico) tbodyHistorico.innerHTML = '';
 
   const hoje = new Date().toLocaleDateString('pt-BR');
-
-  const ativos = dados.filter(p => !p.data_saida);
+  const ativos = (dados || []).filter(p => !p.data_saida);
 
   if (tbodyAtivos) {
     if (ativos.length === 0) {
@@ -339,7 +313,7 @@ async function carregarPrestadores() {
     }
   }
 
-  const movimentacoesHoje = dados.filter(p => {
+  const movimentacoesHoje = (dados || []).filter(p => {
     const dataEntradaApenas = p.data_entrada ? p.data_entrada.split(' ')[0] : '';
     const dataSaidaApenas = p.data_saida ? p.data_saida.split(' ')[0] : '';
     return dataEntradaApenas === hoje || dataSaidaApenas === hoje;
@@ -383,75 +357,49 @@ async function registrarPrestador(e) {
 
   if (btnSubmit) btnSubmit.disabled = true;
 
-  const novoPrestador = {
+  const { error } = await _supabase.from('manutencao').insert([{
     nome,
     documento,
     empresa,
     atividade,
     data_entrada: getAgoraFormatado(),
     data_saida: null
-  };
+  }]);
 
-  try {
-    const res = await fetch(`${API_URL}/api/manutencao`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(novoPrestador)
-    });
-
-    if (res.ok) {
-      if (form) form.reset();
-      await carregarPrestadores();
-    } else {
-      const errData = await res.json();
-      alert(`Erro: ${errData.error || 'Erro ao registrar'}`);
-    }
-  } catch (err) {
-    console.error('Erro ao registrar prestador:', err);
-    alert('Erro de conexão ao registrar prestador.');
-  } finally {
-    if (btnSubmit) btnSubmit.disabled = false;
+  if (!error) {
+    if (form) form.reset();
+    await carregarPrestadores();
+  } else {
+    alert(`Erro ao registrar prestador: ${error.message}`);
   }
+
+  if (btnSubmit) btnSubmit.disabled = false;
 }
 
 async function darSaidaPrestador(id) {
   const horaSaida = getAgoraFormatado();
-  try {
-    const res = await fetch(`${API_URL}/api/manutencao/${id}/saida`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data_saida: horaSaida })
-    });
+  const { error } = await _supabase
+    .from('manutencao')
+    .update({ data_saida: horaSaida })
+    .eq('id', id);
 
-    if (res.ok) {
-      await carregarPrestadores();
-    } else {
-      alert('Erro ao registrar saída do prestador.');
-    }
-  } catch (err) {
-    console.error('Erro ao dar saída no prestador:', err);
-    alert('Erro de conexão ao dar saída.');
+  if (!error) {
+    await carregarPrestadores();
+  } else {
+    alert('Erro ao registrar saída do prestador.');
   }
 }
 
-// ---------------- DASHBOARD ----------------
+// ---------------- DASHBOARD (SUPABASE) ----------------
 async function atualizarDashboard() {
-  let visitantes = [], prestadores = [];
-  try {
-    const resV = await fetch(`${API_URL}/api/visitantes`);
-    visitantes = resV.ok ? await resV.json() : [];
-    
-    const resP = await fetch(`${API_URL}/api/manutencao`);
-    prestadores = resP.ok ? await resP.json() : [];
-  } catch (err) {
-    console.error('Erro ao atualizar dashboard:', err);
-  }
+  const { data: v } = await _supabase.from('visitantes').select('*');
+  const { data: p } = await _supabase.from('manutencao').select('*');
 
-  visitantes = Array.isArray(visitantes) ? visitantes : [];
-  prestadores = Array.isArray(prestadores) ? prestadores : [];
+  const visitantes = v || [];
+  const prestadores = p || [];
 
-  const vAtivos = visitantes.filter(v => !v.data_saida).length;
-  const pAtivos = prestadores.filter(p => !p.data_saida).length;
+  const vAtivos = visitantes.filter(x => !x.data_saida).length;
+  const pAtivos = prestadores.filter(x => !x.data_saida).length;
 
   if (document.getElementById('dash-v-ativos')) document.getElementById('dash-v-ativos').innerText = vAtivos;
   if (document.getElementById('dash-p-ativos')) document.getElementById('dash-p-ativos').innerText = pAtivos;
@@ -518,7 +466,7 @@ function renderizarGraficos(visitantes, prestadores, vAtivos, pAtivos) {
   });
 }
 
-// ---------------- RELATÓRIOS E EXPORTAÇÃO PDF ----------------
+// ---------------- RELATÓRIOS E PDF (SUPABASE) ----------------
 async function carregarRelatorios() {
   const tipo = document.getElementById('filtro-tipo')?.value;
   const mes = document.getElementById('filtro-mes')?.value;
@@ -528,17 +476,10 @@ async function carregarRelatorios() {
   const containerSetor = document.getElementById('container-filtro-setor');
   if (containerSetor) containerSetor.style.display = (tipo === 'manutencao') ? 'none' : 'block';
 
-  const endpoint = tipo === 'visitantes' ? `${API_URL}/api/visitantes` : `${API_URL}/api/manutencao`;
-  let dados = [];
+  const tabela = tipo === 'visitantes' ? 'visitantes' : 'manutencao';
+  const { data: resData } = await _supabase.from(tabela).select('*').order('id', { ascending: false });
 
-  try {
-    const res = await fetch(endpoint);
-    if (res.ok) dados = await res.json();
-  } catch (err) {
-    console.error('Erro ao buscar dados do relatório:', err);
-  }
-
-  dados = Array.isArray(dados) ? dados : [];
+  let dados = resData || [];
 
   dados = dados.filter(item => {
     const itemSetor = item.setor_destino || item.setor || '';
