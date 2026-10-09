@@ -95,7 +95,7 @@ function extrairMesEAno(strData) {
   return { mes: null, ano: null };
 }
 
-// ---------------- LÓGICA DA JANELA MODAL MANUAL ----------------
+// ---------------- LÓGICA DA MODAL FLUTUANTE ----------------
 function abrirModalManual(tipo) {
   const modal = document.getElementById('modal-manual');
   const modalTipo = document.getElementById('modal-tipo');
@@ -112,22 +112,23 @@ function abrirModalManual(tipo) {
     modalTitulo.innerText = 'Registro Manual de Visitante';
     groupSetor.style.display = 'block';
     groupEmpresa.style.display = 'none';
-    inputSetor.required = true;
-    inputEmpresa.required = false;
+    if (inputSetor) inputSetor.required = true;
+    if (inputEmpresa) inputEmpresa.required = false;
   } else {
     modalTitulo.innerText = 'Registro Manual de Manutenção Predial';
     groupSetor.style.display = 'none';
     groupEmpresa.style.display = 'block';
-    inputSetor.required = false;
-    inputEmpresa.required = true;
+    if (inputSetor) inputSetor.required = false;
+    if (inputEmpresa) inputEmpresa.required = true;
   }
 
   document.getElementById('form-manual').reset();
-  modal.style.display = 'flex';
+  modal.style.setProperty('display', 'flex', 'important');
 }
 
 function fecharModalManual() {
-  document.getElementById('modal-manual').style.display = 'none';
+  const modal = document.getElementById('modal-manual');
+  modal.style.setProperty('display', 'none', 'important');
 }
 
 async function salvarRegistroManual(e) {
@@ -406,7 +407,7 @@ async function carregarPrestadores() {
 
   if (tbodyAtivos) {
     if (ativos.length === 0) {
-      tbodyAtivos.innerHTML = '<tr><td colspan="5" style="text-align:center; color: #64748b;">Nenhum prestador ativo no momento.</td></tr>';
+      tbodyAtivos.innerHTML = '<tr><td colspan="5" style="text-align:center; color: #64748b;">Nenum prestador ativo no momento.</td></tr>';
     } else {
       ativos.forEach(p => {
         tbodyAtivos.innerHTML += `
