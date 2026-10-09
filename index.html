@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <!-- PAINEL PRINCIPAL (OCULTO POR PADRÃO ATÉ O LOGIN) -->
+    <!-- PAINEL PRINCIPAL -->
     <div id="painel-principal" class="app-shell" style="display: none;">
 
         <header class="top-header">
@@ -166,7 +166,6 @@
                 </div>
 
                 <div class="grid-2">
-                    <!-- FORMULÁRIO VISITANTE -->
                     <div class="card form-card">
                         <div class="card-header">
                             <div class="card-icon green">+</div>
@@ -212,7 +211,6 @@
                         </form>
                     </div>
 
-                    <!-- VISITANTES ATIVOS -->
                     <div class="card table-card">
                         <div class="card-header">
                             <div class="card-icon green">✓</div>
@@ -243,7 +241,6 @@
                     </div>
                 </div>
 
-                <!-- HISTÓRICO -->
                 <div class="card history-card">
                     <div class="card-header">
                         <div class="card-icon blue">↔</div>
@@ -506,4 +503,47 @@
                                 <option value="EAGEP-RJ (RH)">EAGEP-RJ (RH)</option>
                                 <option value="EARRE-RJ (Arrecadação)">EARRE-RJ (Arrecadação)</option>
                                 <option value="EDOC-RJ (Protocolo)">EDOC-RJ (Protocolo)</option>
-                                <option value="DIPAM-RJ (
+                                <option value="DIPAM-RJ (Anilhas/Fiscalização)">DIPAM-RJ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-actions">
+                        <button onclick="exportarRelatorioPDF()" class="btn-primary">
+                            <span>📄 Exportar para PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card history-card">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr id="cabecalho-tabela-relatorio">
+                                    <th>Nome</th>
+                                    <th>Documento</th>
+                                    <th>Setor</th>
+                                    <th>Atividade</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-historico-filtrado"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="app-footer">
+            <span>© IBAMA RJ - Superintendência do Rio de Janeiro</span>
+            <span>Sistema de Portaria v2.0 - Supabase</span>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT DA APLICAÇÃO -->
+    <script src="app.js"></script>
+</body>
+</html>
