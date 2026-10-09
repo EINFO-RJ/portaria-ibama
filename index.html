@@ -204,6 +204,17 @@
                                 <input type="text" id="v-atividade" placeholder="Ex.: Reunião, entrega de documento...">
                             </div>
 
+                            <!-- CAMPOS REGISTRO MANUAL DE DATA/HORA -->
+                            <div class="form-group">
+                                <label for="v-entrada-manual">Data/Hora Entrada (Opcional - Retroativo)</label>
+                                <input type="datetime-local" id="v-entrada-manual">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="v-saida-manual">Data/Hora Saída (Opcional - se já saiu)</label>
+                                <input type="datetime-local" id="v-saida-manual">
+                            </div>
+
                             <button type="button" id="btn-submit-visitante" class="btn-primary btn-form">
                                 <span>Registrar Entrada</span>
                                 <span>→</span>
@@ -306,6 +317,17 @@
                             <div class="form-group">
                                 <label for="m-atividade">Serviço / Atividade</label>
                                 <input type="text" id="m-atividade" placeholder="Ex.: Elétrica, climatização...">
+                            </div>
+
+                            <!-- CAMPOS REGISTRO MANUAL DE DATA/HORA -->
+                            <div class="form-group">
+                                <label for="m-entrada-manual">Data/Hora Entrada (Opcional - Retroativo)</label>
+                                <input type="datetime-local" id="m-entrada-manual">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="m-saida-manual">Data/Hora Saída (Opcional - se já saiu)</label>
+                                <input type="datetime-local" id="m-saida-manual">
                             </div>
 
                             <button type="button" id="btn-submit-manutencao" class="btn-primary btn-laranja btn-form">
