@@ -783,3 +783,17 @@ th {
 .btn-fechar-modal:hover {
     color: var(--danger) !important;
 }
+
+/* ==========================================================================
+   23. CORREÇÃO DE ALINHAMENTO DAS TABELAS
+   ========================================================================== */
+
+/* Padroniza a proporção das colunas para Visitantes e Prestadores (Ativos e Histórico) */
+table th:nth-child(1), table td:nth-child(1) { width: 22%; }
+table th:nth-child(2), table td:nth-child(2) { width: 18%; }
+table th:nth-child(3), table td:nth-child(3) { width: 25%; }
+table th:nth-child(4), table td:nth-child(4) { width: 20%; }
+table th:nth-child(5), table td:nth-child(5) { width: 15%; text-align: center; }
+
+/* Para tabelas com 6 colunas (ex: Relatórios / Histórico completo) */
+table th:nth-child(6), table td:nth-child(6) { width: 15%; text-align: center; }
