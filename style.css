@@ -724,7 +724,7 @@ th {
     height: 100vh !important;
     background: rgba(10, 25, 17, 0.65) !important;
     backdrop-filter: blur(4px);
-    display: flex !important;
+    display: none !important;
     align-items: center !important;
     justify-content: center !important;
     z-index: 99999 !important;
