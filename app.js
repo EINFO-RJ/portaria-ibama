@@ -68,6 +68,14 @@ function getAgoraFormatado() {
   return agora.toLocaleDateString('pt-BR') + ' ' + agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 }
 
+function formatarDataHoraInput(valorInput) {
+  if (!valorInput) return null;
+  const [dataPart, horaPart] = valorInput.split('T');
+  if (!dataPart || !horaPart) return null;
+  const [ano, mes, dia] = dataPart.split('-');
+  return `${dia}/${mes}/${ano} ${horaPart}`;
+}
+
 function extrairMesEAno(strData) {
   if (!strData) return { mes: null, ano: null };
 
@@ -101,7 +109,6 @@ async function realizarLogin(e) {
   }
 
   try {
-    // Consulta a tabela "usuarios" no Supabase
     const { data: usuario, error } = await _supabase
       .from('usuarios')
       .select('*')
@@ -228,6 +235,10 @@ async function registrarVisitante(e) {
   const setor = document.getElementById('v-setor')?.value;
   const atividade = document.getElementById('v-atividade')?.value.trim();
 
+  // Captura dos horários manuais
+  const entradaInput = document.getElementById('v-entrada-manual')?.value;
+  const saidaInput = document.getElementById('v-saida-manual')?.value;
+
   if (!nome || !documento || !setor) {
     alert('Preencha os campos obrigatórios!');
     return;
@@ -235,14 +246,17 @@ async function registrarVisitante(e) {
 
   if (btnSubmit) btnSubmit.disabled = true;
 
+  const dataEntradaFinal = formatarDataHoraInput(entradaInput) || getAgoraFormatado();
+  const dataSaidaFinal = formatarDataHoraInput(saidaInput) || null;
+
   const { error } = await _supabase.from('visitantes').insert([{
     nome,
     documento,
     setor,
     setor_destino: setor,
     atividade,
-    data_entrada: getAgoraFormatado(),
-    data_saida: null
+    data_entrada: dataEntradaFinal,
+    data_saida: dataSaidaFinal
   }]);
 
   if (!error) {
@@ -349,6 +363,10 @@ async function registrarPrestador(e) {
   const empresa = document.getElementById('m-empresa')?.value.trim();
   const atividade = document.getElementById('m-atividade')?.value.trim();
 
+  // Captura dos horários manuais
+  const entradaInput = document.getElementById('m-entrada-manual')?.value;
+  const saidaInput = document.getElementById('m-saida-manual')?.value;
+
   if (!nome || !documento || !empresa) {
     alert('Preencha os campos obrigatórios!');
     return;
@@ -356,13 +374,16 @@ async function registrarPrestador(e) {
 
   if (btnSubmit) btnSubmit.disabled = true;
 
+  const dataEntradaFinal = formatarDataHoraInput(entradaInput) || getAgoraFormatado();
+  const dataSaidaFinal = formatarDataHoraInput(saidaInput) || null;
+
   const { error } = await _supabase.from('manutencao').insert([{
     nome,
     documento,
     empresa,
     atividade,
-    data_entrada: getAgoraFormatado(),
-    data_saida: null
+    data_entrada: dataEntradaFinal,
+    data_saida: dataSaidaFinal
   }]);
 
   if (!error) {
