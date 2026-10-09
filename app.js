@@ -55,8 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('filtro-setor')?.addEventListener('change', carregarRelatorios);
 });
 
-  setTimeout(esconderSplashScreen, 800);
-});
+
 
 function mudarAba(abaId, elemento, cor) {
   document.querySelectorAll('.painel-secao').forEach(el => el.classList.remove('ativo'));
