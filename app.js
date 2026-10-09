@@ -1,7 +1,8 @@
-// Detecta dinamicamente a origem
-const API_URL = window.location.origin.includes(':3000') 
-  ? window.location.origin 
-  : `${window.location.protocol}//${window.location.hostname}:3000`;
+// CONFIGURAÇÃO DO SUPABASE
+const SUPABASE_URL = 'https://uzxyouvczvehcnhbkdnb.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6eHlvdXZjenZlaGNuaGJrZG5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5ODEzMTQsImV4cCI6MjEwMjU1NzMxNH0.BFX1DpZ93oKZmmKyTF-1m4e6FiqKWwKz-164smRZOak';
+
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let chartSetoresInst = null;
 let chartFluxoInst = null;
