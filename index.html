@@ -204,20 +204,13 @@
                                 <input type="text" id="v-atividade" placeholder="Ex.: Reunião, entrega de documento...">
                             </div>
 
-                            <!-- CAMPOS REGISTRO MANUAL DE DATA/HORA -->
-                            <div class="form-group">
-                                <label for="v-entrada-manual">Data/Hora Entrada (Opcional - Retroativo)</label>
-                                <input type="datetime-local" id="v-entrada-manual">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="v-saida-manual">Data/Hora Saída (Opcional - se já saiu)</label>
-                                <input type="datetime-local" id="v-saida-manual">
-                            </div>
-
                             <button type="button" id="btn-submit-visitante" class="btn-primary btn-form">
                                 <span>Registrar Entrada</span>
                                 <span>→</span>
+                            </button>
+
+                            <button type="button" onclick="abrirModalManual('visitante')" class="btn-secondary btn-form" style="margin-top: 10px;">
+                                <span>🕒 Registro Manual / Retroativo</span>
                             </button>
                         </form>
                     </div>
@@ -319,20 +312,13 @@
                                 <input type="text" id="m-atividade" placeholder="Ex.: Elétrica, climatização...">
                             </div>
 
-                            <!-- CAMPOS REGISTRO MANUAL DE DATA/HORA -->
-                            <div class="form-group">
-                                <label for="m-entrada-manual">Data/Hora Entrada (Opcional - Retroativo)</label>
-                                <input type="datetime-local" id="m-entrada-manual">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="m-saida-manual">Data/Hora Saída (Opcional - se já saiu)</label>
-                                <input type="datetime-local" id="m-saida-manual">
-                            </div>
-
                             <button type="button" id="btn-submit-manutencao" class="btn-primary btn-laranja btn-form">
                                 <span>Registrar Entrada</span>
                                 <span>→</span>
+                            </button>
+
+                            <button type="button" onclick="abrirModalManual('manutencao')" class="btn-secondary btn-form" style="margin-top: 10px;">
+                                <span>🕒 Registro Manual / Retroativo</span>
                             </button>
                         </form>
                     </div>
@@ -563,6 +549,68 @@
             <span>Sistema de Portaria v2.0 - Supabase</span>
         </footer>
 
+    </div>
+
+    <!-- JANELA MODAL PARA REGISTRO MANUAL / RETROATIVO -->
+    <div id="modal-manual" class="modal-overlay" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-titulo">Registro Manual / Retroativo</h3>
+                <button onclick="fecharModalManual()" class="btn-fechar-modal">&times;</button>
+            </div>
+            <form id="form-manual" onsubmit="salvarRegistroManual(event)">
+                <input type="hidden" id="modal-tipo" value="visitante">
+
+                <div class="form-group">
+                    <label for="modal-nome">Nome Completo <span>*</span></label>
+                    <input type="text" id="modal-nome" required placeholder="Digite o nome completo">
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-documento">Documento <span>*</span></label>
+                    <input type="text" id="modal-documento" required placeholder="CPF ou RG">
+                </div>
+
+                <!-- CAMPO DINÂMICO DE SETOR OU EMPRESA -->
+                <div class="form-group" id="group-modal-setor">
+                    <label for="modal-setor">Setor de Destino <span>*</span></label>
+                    <select id="modal-setor">
+                        <option value="">Selecione o setor...</option>
+                        <option value="NQA-RJ (Cadastro)">NQA-RJ (Cadastro)</option>
+                        <option value="EINFO">EINFO (TI)</option>
+                        <option value="EAGEP-RJ (RH)">EAGEP-RJ (RH)</option>
+                        <option value="EARRE-RJ (Arrecadação)">EARRE-RJ (Arrecadação)</option>
+                        <option value="EDOC-RJ (Protocolo)">EDOC-RJ (Protocolo)</option>
+                        <option value="DIPAM-RJ (Anilhas/Fiscalização)">DIPAM-RJ</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="group-modal-empresa" style="display: none;">
+                    <label for="modal-empresa">Empresa / Terceirizada <span>*</span></label>
+                    <input type="text" id="modal-empresa" placeholder="Nome da empresa">
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-atividade">Atividade / Motivo</label>
+                    <input type="text" id="modal-atividade" placeholder="Ex.: Reunião, serviço elétrico...">
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-entrada">Data/Hora Entrada <span>*</span></label>
+                    <input type="datetime-local" id="modal-entrada" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="modal-saida">Data/Hora Saída (Opcional)</label>
+                    <input type="datetime-local" id="modal-saida">
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" onclick="fecharModalManual()" class="btn-secondary" style="flex: 1;">Cancelar</button>
+                    <button type="submit" id="btn-salvar-modal" class="btn-primary" style="flex: 1;">Salvar Registro</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- SCRIPT DA APLICAÇÃO -->
