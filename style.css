@@ -785,10 +785,10 @@ th {
 }
 
 /* ==========================================================================
-   23. CORREÇÃO FINAL DE LARGURA, SCROLL E BOTÕES DAS TABELAS
+   23. CORREÇÃO FINAL DE LARGURA E BOTÕES EMPILHADOS NA TABELA
    ========================================================================== */
 
-/* Permite que o container ajuste perfeitamente sem barras de rolagem desnecessárias */
+/* Container da tabela sem barra de rolagem horizontal desnecessária */
 .table-container {
     width: 100% !important;
     overflow-x: hidden !important;
@@ -803,14 +803,14 @@ th {
     table-layout: fixed !important;
 }
 
-/* Distribuição harmônica e proporcional das colunas para preencher 100% sem estourar */
-.table-container th:nth-child(1), .table-container td:nth-child(1) { width: 24% !important; text-align: left !important; padding-left: 14px !important; }
+/* Distribuição harmônica das colunas (Dando mais respiro na última coluna para os botões empilhados) */
+.table-container th:nth-child(1), .table-container td:nth-child(1) { width: 22% !important; text-align: left !important; padding-left: 14px !important; }
 .table-container th:nth-child(2), .table-container td:nth-child(2) { width: 18% !important; text-align: left !important; }
 .table-container th:nth-child(3), .table-container td:nth-child(3) { width: 22% !important; text-align: left !important; }
-.table-container th:nth-child(4), .table-container td:nth-child(4) { width: 21% !important; text-align: left !important; }
-.table-container th:nth-child(5), .table-container td:nth-child(5) { width: 15% !important; text-align: center !important; }
+.table-container th:nth-child(4), .table-container td:nth-child(4) { width: 20% !important; text-align: left !important; }
+.table-container th:nth-child(5), .table-container td:nth-child(5) { width: 18% !important; text-align: center !important; }
 
-/* Proteção contra quebras visuais e estouro de texto */
+/* Proteção contra quebras visuais e alinhamento vertical centralizado */
 .table-container th, .table-container td {
     padding: 11px 8px !important;
     border-bottom: 1px solid var(--border-light) !important;
@@ -829,28 +829,31 @@ th {
     text-transform: uppercase !important;
 }
 
-/* Container de botões de ação otimizado para caber no espaço sem cortar */
+/* Container de botões empilhados verticalmente (Opção 1) */
 .acoes-container {
-    display: inline-flex !important;
-    align-items: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
     justify-content: center !important;
     gap: 4px !important;
-    white-space: nowrap !important;
+    padding: 2px 0 !important;
 }
 
 .btn-etiqueta, .btn-saida {
-    height: 26px !important;
-    padding: 0 6px !important;
+    height: 25px !important;
+    width: 100% !important;
+    padding: 0 4px !important;
     border-radius: 4px !important;
     color: white !important;
-    font-size: 0.58rem !important;
+    font-size: 0.6rem !important;
     font-weight: 650 !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 2px !important;
+    gap: 3px !important;
     border: none !important;
+    white-space: nowrap !important;
 }
 
 .btn-etiqueta { background: var(--primary-green) !important; }
