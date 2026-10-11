@@ -541,7 +541,7 @@ img {
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 30px;
+    padding: 18px 30px !important;
 }
 
 .painel-secao {
@@ -550,6 +550,7 @@ img {
 
 .painel-secao.ativo {
     display: block;
+    margin-top: 0px !important;
 }
 
 .section-heading {
@@ -738,7 +739,7 @@ th {
 }
 
 /* ==========================================================================
-   22. JANELA MODAL FLUTUANTE
+   JANELA MODAL FLUTUANTE
    ========================================================================== */
 
 .modal-overlay {
@@ -812,7 +813,7 @@ th {
 }
 
 /* ==========================================================================
-   23. ALINHAMENTO E BOTÕES EMPILHADOS NA TABELA
+   ALINHAMENTO E BOTÕES EMPILHADOS NA TABELA
    ========================================================================== */
 
 .table-container {
