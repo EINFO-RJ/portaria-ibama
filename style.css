@@ -785,10 +785,10 @@ th {
 }
 
 /* ==========================================================================
-   23. CORREÇÃO FINAL DE LARGURA E BOTÕES EMPILHADOS NA TABELA
+   23. CORREÇÃO DA ORDEM E ALINHAMENTO VERTICAL DOS BOTÕES DE AÇÃO
    ========================================================================== */
 
-/* Container da tabela sem barra de rolagem horizontal desnecessária */
+/* Container da tabela ajustado */
 .table-container {
     width: 100% !important;
     overflow-x: hidden !important;
@@ -803,16 +803,16 @@ th {
     table-layout: fixed !important;
 }
 
-/* Distribuição harmônica das colunas (Dando mais respiro na última coluna para os botões empilhados) */
+/* Distribuição harmônica das colunas */
 .table-container th:nth-child(1), .table-container td:nth-child(1) { width: 22% !important; text-align: left !important; padding-left: 14px !important; }
 .table-container th:nth-child(2), .table-container td:nth-child(2) { width: 18% !important; text-align: left !important; }
 .table-container th:nth-child(3), .table-container td:nth-child(3) { width: 22% !important; text-align: left !important; }
 .table-container th:nth-child(4), .table-container td:nth-child(4) { width: 20% !important; text-align: left !important; }
 .table-container th:nth-child(5), .table-container td:nth-child(5) { width: 18% !important; text-align: center !important; }
 
-/* Proteção contra quebras visuais e alinhamento vertical centralizado */
+/* Alinhamento vertical e proteção contra estouro */
 .table-container th, .table-container td {
-    padding: 11px 8px !important;
+    padding: 10px 8px !important;
     border-bottom: 1px solid var(--border-light) !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -829,20 +829,20 @@ th {
     text-transform: uppercase !important;
 }
 
-/* Container de botões empilhados verticalmente (Opção 1) */
+/* Container de botões empilhados: 'column-reverse' inverte a ordem para o 'Dar Saída' ficar em cima e o 'Etiqueta' embaixo */
 .acoes-container {
     display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
+    flex-direction: column-reverse !important;
+    align-items: center !important;
     justify-content: center !important;
     gap: 4px !important;
-    padding: 2px 0 !important;
+    width: 100% !important;
 }
 
 .btn-etiqueta, .btn-saida {
     height: 25px !important;
-    width: 100% !important;
-    padding: 0 4px !important;
+    width: 90px !important; /* Largura fixa idêntica para ambos ficarem com o mesmo tamanho exato */
+    padding: 0 !important;
     border-radius: 4px !important;
     color: white !important;
     font-size: 0.6rem !important;
