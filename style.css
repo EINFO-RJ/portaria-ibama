@@ -15,18 +15,18 @@
     --accent-blue-dark: #1d4ed8;
     --accent-blue-light: rgba(37, 99, 235, 0.15);
 
-    --bg-light: #0d1b13;
-    --bg-soft: #12241a;
+    --bg-light: #07130e;
+    --bg-soft: #0d2318;
 
-    --card-bg: rgba(18, 36, 26, 0.85);
+    --card-bg: rgba(7, 24, 16, 0.82);
 
     --text-dark: #f0fdf4;
     --text-primary: #e2e8f0;
     --text-muted: #94a3b8;
     --text-light: #64748b;
 
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-light: rgba(255, 255, 255, 0.05);
+    --border-color: rgba(52, 211, 153, 0.18);
+    --border-light: rgba(255, 255, 255, 0.07);
 
     --danger: #dc2626;
     --danger-dark: #b91c1c;
@@ -37,9 +37,9 @@
     --radius: 12px;
     --radius-lg: 16px;
 
-    --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.3);
-    --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.55);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.7);
 
     --transition: all 0.2s ease;
 }
@@ -56,7 +56,9 @@ html {
 
 body {
     min-height: 100vh;
-    background: radial-gradient(circle at 50% 20%, rgba(5, 150, 105, 0.12), transparent 45%), linear-gradient(135deg, #07130e 0%, #0c1f15 50%, #05110b 100%);
+    background: 
+        linear-gradient(135deg, rgba(4, 18, 12, 0.82) 0%, rgba(7, 28, 18, 0.88) 100%),
+        url('Banner%20Institucional%20IBAMA%20em%20Verde%20Floresta.png') center / cover no-repeat fixed;
     color: var(--text-primary);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -86,7 +88,7 @@ img {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: radial-gradient(circle at 50% 35%, rgba(0, 104, 55, 0.28), transparent 35%), linear-gradient(145deg, #07160d 0%, #0d2318 48%, #003d22 100%);
+    background: radial-gradient(circle at 50% 35%, rgba(5, 150, 105, 0.3), transparent 40%), linear-gradient(145deg, #030d08 0%, #071f14 50%, #02170d 100%);
     color: white;
     text-align: center;
 }
@@ -130,7 +132,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #4ade80;
+    color: #34d399;
 }
 
 .splash-text {
@@ -162,7 +164,7 @@ img {
     align-items: center;
     gap: 14px;
     padding: 14px 20px;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 10px;
     background: rgba(255,255,255,0.04);
     text-align: left;
@@ -191,7 +193,8 @@ img {
     position: relative;
     padding: 30px;
     overflow: hidden;
-    background: linear-gradient(135deg, #05110b 0%, #0d2318 45%, #022c18 100%);
+    background: linear-gradient(135deg, rgba(3, 13, 8, 0.85) 0%, rgba(7, 28, 18, 0.92) 100%),
+                url('Banner%20Institucional%20IBAMA%20em%20Verde%20Floresta.png') center / cover no-repeat fixed;
 }
 
 .login-card {
@@ -199,11 +202,11 @@ img {
     width: 100%;
     max-width: 440px;
     padding: 38px;
-    background: rgba(18, 36, 26, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(6, 22, 15, 0.90);
+    border: 1px solid rgba(52, 211, 153, 0.25);
     border-radius: 16px;
-    box-shadow: 0 25px 70px rgba(0,0,0,0.48);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 25px 70px rgba(0,0,0,0.65);
+    backdrop-filter: blur(12px);
 }
 
 .login-brand {
@@ -220,7 +223,7 @@ img {
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background: rgba(5, 150, 105, 0.2);
+    background: rgba(5, 150, 105, 0.25);
 }
 
 .login-logo {
@@ -253,7 +256,7 @@ img {
     padding: 5px 9px;
     margin-bottom: 10px;
     border-radius: 5px;
-    background: rgba(5, 150, 105, 0.2);
+    background: rgba(5, 150, 105, 0.25);
     color: #34d399;
     font-size: 0.65rem;
     font-weight: 700;
@@ -294,15 +297,15 @@ img {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     outline: none;
-    background: rgba(7, 19, 14, 0.8);
+    background: rgba(4, 15, 10, 0.85);
     color: var(--text-dark);
     font-size: 0.85rem;
     transition: var(--transition);
 }
 
 .form-group input:focus, .form-group select:focus {
-    border-color: var(--primary-green);
-    box-shadow: 0 0 0 3px rgba(5,150,105,0.25);
+    border-color: #34d399;
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
 }
 
 .input-wrapper {
@@ -337,7 +340,7 @@ img {
     font-weight: 650;
     cursor: pointer;
     transition: var(--transition);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .btn-primary:hover {
@@ -365,8 +368,8 @@ img {
 }
 
 .btn-secondary:hover {
-    background: rgba(5, 150, 105, 0.15);
-    border-color: var(--primary-green);
+    background: rgba(5, 150, 105, 0.2);
+    border-color: #34d399;
     color: #34d399;
 }
 
@@ -399,7 +402,7 @@ img {
 }
 
 .btn-logout:hover {
-    background: rgba(220, 38, 38, 0.2);
+    background: rgba(220, 38, 38, 0.25);
     border-color: var(--danger);
 }
 
@@ -415,9 +418,10 @@ img {
     justify-content: space-between;
     gap: 25px;
     padding: 12px 30px;
-    background: linear-gradient(100deg, #022c18, #071f14);
+    background: linear-gradient(100deg, rgba(2, 28, 17, 0.95), rgba(7, 31, 20, 0.95));
     border-bottom: 1px solid var(--border-color);
     color: white;
+    backdrop-filter: blur(10px);
 }
 
 .header-brand {
@@ -471,7 +475,7 @@ img {
     gap: 8px;
     padding: 6px 12px;
     border-radius: 7px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.3);
     border: 1px solid var(--border-color);
 }
 
@@ -488,8 +492,8 @@ img {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(11, 24, 17, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(5, 20, 13, 0.92);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -517,18 +521,18 @@ img {
 
 .btn-nav:hover {
     color: var(--text-dark);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .btn-nav.ativo-verde {
     color: #34d399;
-    background: rgba(5, 150, 105, 0.12);
-    border-bottom: 3px solid var(--primary-green);
+    background: rgba(5, 150, 105, 0.18);
+    border-bottom: 3px solid #34d399;
 }
 
 .btn-nav.ativo-laranja {
     color: #fbbf24;
-    background: rgba(217, 119, 6, 0.12);
+    background: rgba(217, 119, 6, 0.18);
     border-bottom: 3px solid var(--accent-orange);
 }
 
@@ -588,13 +592,25 @@ img {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow);
     padding: 20px;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
 }
 
+/* CARD DE ÚLTIMAS MOVIMENTAÇÕES EM TOM CINZA-AZULADO GRAFITE */
 .history-card {
     margin-top: 20px;
+    background: rgba(18, 28, 34, 0.88) !important;
+    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+}
+
+.history-card .table-container {
+    background: rgba(10, 18, 23, 0.7) !important;
+}
+
+.history-card th {
+    background: rgba(0, 0, 0, 0.4) !important;
+    color: #94a3b8 !important;
 }
 
 .card-header {
@@ -615,9 +631,9 @@ img {
     font-weight: 600;
 }
 
-.card-icon.green { color: #34d399; background: rgba(5, 150, 105, 0.2); }
-.card-icon.orange { color: #fbbf24; background: rgba(217, 119, 6, 0.2); }
-.card-icon.blue { color: #60a5fa; background: rgba(37, 99, 235, 0.2); }
+.card-icon.green { color: #34d399; background: rgba(5, 150, 105, 0.25); }
+.card-icon.orange { color: #fbbf24; background: rgba(217, 119, 6, 0.25); }
+.card-icon.blue { color: #60a5fa; background: rgba(37, 99, 235, 0.25); }
 
 .card-header p {
     color: var(--text-muted);
@@ -630,7 +646,7 @@ img {
     overflow-x: auto;
     border: 1px solid var(--border-light);
     border-radius: 8px;
-    background: rgba(7, 19, 14, 0.5);
+    background: rgba(4, 15, 10, 0.6);
 }
 
 table {
@@ -646,7 +662,7 @@ th, td {
 }
 
 th {
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.3);
     color: var(--text-muted);
     font-size: 0.66rem;
     font-weight: 700;
@@ -676,9 +692,9 @@ th {
     font-size: 1.35rem;
 }
 
-.dash-icon.green { background: rgba(5, 150, 105, 0.2); color: #34d399; }
-.dash-icon.orange { background: rgba(217, 119, 6, 0.2); color: #fbbf24; }
-.dash-icon.blue { background: rgba(37, 99, 235, 0.2); color: #60a5fa; }
+.dash-icon.green { background: rgba(5, 150, 105, 0.25); color: #34d399; }
+.dash-icon.orange { background: rgba(217, 119, 6, 0.25); color: #fbbf24; }
+.dash-icon.blue { background: rgba(37, 99, 235, 0.25); color: #60a5fa; }
 
 .dash-content span {
     color: var(--text-muted);
@@ -733,8 +749,8 @@ th {
     bottom: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background: rgba(3, 10, 6, 0.8) !important;
-    backdrop-filter: blur(6px);
+    background: rgba(2, 10, 6, 0.82) !important;
+    backdrop-filter: blur(8px);
     display: none !important;
     align-items: center !important;
     justify-content: center !important;
@@ -743,13 +759,13 @@ th {
 }
 
 .modal-card {
-    background: #0d1b13 !important;
+    background: #06180f !important;
     width: 100% !important;
     max-width: 520px !important;
     border-radius: 16px !important;
     padding: 28px !important;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75) !important;
+    border: 1px solid rgba(52, 211, 153, 0.25) !important;
     position: relative !important;
     max-height: 90vh !important;
     overflow-y: auto !important;
@@ -804,7 +820,7 @@ th {
     overflow-x: hidden !important;
     border: 1px solid var(--border-light);
     border-radius: 8px;
-    background: rgba(7, 19, 14, 0.5);
+    background: rgba(4, 15, 10, 0.6);
 }
 
 .table-container table {
@@ -832,7 +848,7 @@ th {
 
 /* Estilização dos cabeçalhos */
 .table-container th {
-    background: rgba(0, 0, 0, 0.25) !important;
+    background: rgba(0, 0, 0, 0.3) !important;
     color: var(--text-muted) !important;
     font-size: 0.64rem !important;
     font-weight: 700 !important;
