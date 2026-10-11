@@ -785,67 +785,72 @@ th {
 }
 
 /* ==========================================================================
-   23. CORREÇÃO DEFINITIVA DE ALINHAMENTO E POSICIONAMENTO DAS TABELAS
+   23. REFORMULAÇÃO PROFISSIONAL DO ALINHAMENTO DE TABELAS
    ========================================================================== */
 
-/* Força tabela com layout fixo para respeitar rigorosamente as larguras */
+/* Garante que todas as tabelas usem uma grade consistente */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
 .table-container table {
-    table-layout: fixed !important;
     width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
 }
 
-/* 1. Alinhamento rigoroso à ESQUERDA para as colunas de texto (Nome, Setor, Atividade) */
-table th:nth-child(1), table td:nth-child(1),
-table th:nth-child(2), table td:nth-child(2),
-table th:nth-child(3), table td:nth-child(3) {
-    text-align: left !important;
-    padding-left: 16px !important;
+/* Padronização exata e idêntica para CADA coluna em TODAS as tabelas do sistema */
+.table-container th:nth-child(1), .table-container td:nth-child(1) { width: 22% !important; text-align: left !important; padding-left: 16px !important; }
+.table-container th:nth-child(2), .table-container td:nth-child(2) { width: 20% !important; text-align: left !important; }
+.table-container th:nth-child(3), .table-container td:nth-child(3) { width: 25% !important; text-align: left !important; }
+.table-container th:nth-child(4), .table-container td:nth-child(4) { width: 20% !important; text-align: left !important; }
+.table-container th:nth-child(5), .table-container td:nth-child(5) { width: 13% !important; text-align: center !important; }
+
+/* Tratamento de estouro de texto para evitar quebras visuais desalinhadas */
+.table-container th, .table-container td {
+    padding: 12px 10px !important;
+    border-bottom: 1px solid var(--border-light) !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
+    vertical-align: middle !important;
 }
 
-/* Larguras proporcionais fixas para Nome, Setor e Atividade */
-table th:nth-child(1), table td:nth-child(1) { width: 22% !important; }
-table th:nth-child(2), table td:nth-child(2) { width: 22% !important; }
-table th:nth-child(3), table td:nth-child(3) { width: 26% !important; }
-
-/* 2. Coluna 4 (Entrada) */
-table th:nth-child(4), table td:nth-child(4) {
-    width: 18% !important;
-    text-align: left !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
+/* Cabeçalhos padronizados */
+.table-container th {
+    background: #f8faf9 !important;
+    color: #69756e !important;
+    font-size: 0.66rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
 }
 
-/* 3. Coluna 5 (Saída / Ações) - Centralizada para manter o padrão visual dos botões e status */
-table th:nth-child(5), table td:nth-child(5) {
-    width: 12% !important;
-    text-align: center !important;
-}
-
-/* Ajuste compacto dos botões de Ações */
+/* Container de botões perfeitamente centralizado e ajustado para não estourar */
 .acoes-container {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 6px !important;
+    gap: 5px !important;
     white-space: nowrap !important;
 }
 
 .btn-etiqueta, .btn-saida {
-    height: 30px !important;
-    padding: 0 8px !important;
+    height: 28px !important;
+    padding: 0 7px !important;
     border-radius: 5px !important;
     color: white !important;
-    font-size: 0.65rem !important;
+    font-size: 0.62rem !important;
     font-weight: 650 !important;
     cursor: pointer !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 3px !important;
+    gap: 2px !important;
+    border: none !important;
 }
 
 .btn-etiqueta { background: var(--primary-green) !important; }
