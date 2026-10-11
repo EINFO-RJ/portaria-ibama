@@ -785,44 +785,53 @@ th {
 }
 
 /* ==========================================================================
-   23. CORREÇÃO DEFINITIVA DE ALINHAMENTO DAS TABELAS
+   23. CORREÇÃO DEFINITIVA DE ALINHAMENTO E BOTÕES NAS TABELAS
    ========================================================================== */
 
-/* Força um layout fixo consistente em todas as tabelas do sistema */
+/* Força tabela fixa em todas as tabelas para respeitar rigorosamente as porcentagens */
 .table-container table {
     table-layout: fixed !important;
     width: 100% !important;
 }
 
-/* 1. Tabelas ATIVAS (5 colunas com botão de Ações: Nome, Setor, Atividade, Entrada, Ações) */
-#tabela-visitantes-ativos th:nth-child(1), #tabela-visitantes-ativos td:nth-child(1),
-#tabela-prestadores-ativos th:nth-child(1), #tabela-prestadores-ativos td:nth-child(1) { width: 22% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Padronização absoluta de largura para TODAS as tabelas do sistema (5 colunas) */
+/* Coluna 1 (Nome) */
+table th:nth-child(1), table td:nth-child(1) { width: 22% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-#tabela-visitantes-ativos th:nth-child(2), #tabela-visitantes-ativos td:nth-child(2),
-#tabela-prestadores-ativos th:nth-child(2), #tabela-prestadores-ativos td:nth-child(2) { width: 20% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Coluna 2 (Setor / Empresa) */
+table th:nth-child(2), table td:nth-child(2) { width: 22% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-#tabela-visitantes-ativos th:nth-child(3), #tabela-visitantes-ativos td:nth-child(3),
-#tabela-prestadores-ativos th:nth-child(3), #tabela-prestadores-ativos td:nth-child(3) { width: 23% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Coluna 3 (Atividade) */
+table th:nth-child(3), table td:nth-child(3) { width: 24% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-#tabela-visitantes-ativos th:nth-child(4), #tabela-visitantes-ativos td:nth-child(4),
-#tabela-prestadores-ativos th:nth-child(4), #tabela-prestadores-ativos td:nth-child(4) { width: 20% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Coluna 4 (Entrada / Saída) */
+table th:nth-child(4), table td:nth-child(4) { width: 17% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-#tabela-visitantes-ativos th:nth-child(5), #tabela-visitantes-ativos td:nth-child(5),
-#tabela-prestadores-ativos th:nth-child(5), #tabela-prestadores-ativos td:nth-child(5) { width: 15% !important; text-align: center !important; }
+/* Coluna 5 (Saída / Ações) */
+table th:nth-child(5), table td:nth-child(5) { width: 15% !important; text-align: center !important; }
 
+/* Ajuste compacto e alinhado dos botões de Ações */
+.acoes-container {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+}
 
-/* 2. Tabelas de HISTÓRICO / ÚLTIMAS MOVIMENTAÇÕES (5 colunas sem Ações: Nome, Setor/Empresa, Atividade, Entrada, Saída) */
-#tabela-visitantes-historico th:nth-child(1), #tabela-visitantes-historico td:nth-child(1),
-#tabela-prestadores-historico th:nth-child(1), #tabela-prestadores-historico td:nth-child(1) { width: 22% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-etiqueta, .btn-saida {
+    height: 30px !important;
+    padding: 0 8px !important;
+    border-radius: 5px !important;
+    color: white !important;
+    font-size: 0.65rem !important;
+    font-weight: 650 !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+}
 
-#tabela-visitantes-historico th:nth-child(2), #tabela-visitantes-historico td:nth-child(2),
-#tabela-prestadores-historico th:nth-child(2), #tabela-prestadores-historico td:nth-child(2) { width: 20% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-#tabela-visitantes-historico th:nth-child(3), #tabela-visitantes-historico td:nth-child(3),
-#tabela-prestadores-historico th:nth-child(3), #tabela-prestadores-historico td:nth-child(3) { width: 23% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-#tabela-visitantes-historico th:nth-child(4), #tabela-visitantes-historico td:nth-child(4),
-#tabela-prestadores-historico th:nth-child(4), #tabela-prestadores-historico td:nth-child(4) { width: 20% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-#tabela-visitantes-historico th:nth-child(5), #tabela-visitantes-historico td:nth-child(5),
-#tabela-prestadores-historico th:nth-child(5), #tabela-prestadores-historico td:nth-child(5) { width: 15% !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn-etiqueta { background: var(--primary-green) !important; }
+.btn-saida { background: var(--danger) !important; }
