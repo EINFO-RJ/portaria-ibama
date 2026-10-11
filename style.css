@@ -580,6 +580,7 @@ img {
     display: grid;
     grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.8fr);
     gap: 20px;
+    align-items: start !important; /* Impede que o formulário estique junto com a tabela */
 }
 
 .grid-3 {
@@ -606,7 +607,7 @@ img {
 
 .history-card .table-container {
     background: rgba(10, 18, 23, 0.7) !important;
-    max-height: 380px !important; /* Limite de altura com rolagem */
+    max-height: 380px !important;
 }
 
 .history-card th {
@@ -787,11 +788,11 @@ img {
    ALINHAMENTO, ROLAGEM E BOTÕES EMPILHADOS NAS TABELAS
    ========================================================================== */
 
-/* Container da tabela com rolagem vertical automática e limite de altura */
+/* Container da tabela com rolagem vertical automática e altura máxima fixa */
 .table-container {
     width: 100% !important;
-    max-height: 400px !important; /* Limite de altura fixo para criar a barra de rolagem */
-    overflow-y: auto !important;   /* Habilita a barra de rolagem vertical */
+    max-height: 380px !important; /* Limite exato para exibir os registros com rolagem */
+    overflow-y: auto !important;   /* Ativa a barra de rolagem vertical */
     overflow-x: hidden !important;
     border: 1px solid var(--border-light);
     border-radius: 8px;
