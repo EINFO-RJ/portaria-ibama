@@ -606,6 +606,7 @@ img {
 
 .history-card .table-container {
     background: rgba(10, 18, 23, 0.7) !important;
+    max-height: 380px !important; /* Limite de altura com rolagem */
 }
 
 .history-card th {
@@ -638,35 +639,6 @@ img {
 .card-header p {
     color: var(--text-muted);
     font-size: 0.78rem;
-}
-
-/* TABELAS */
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-    border: 1px solid var(--border-light);
-    border-radius: 8px;
-    background: rgba(4, 15, 10, 0.6);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.75rem;
-}
-
-th, td {
-    padding: 12px 13px;
-    border-bottom: 1px solid var(--border-light);
-    color: var(--text-primary);
-}
-
-th {
-    background: rgba(0, 0, 0, 0.3);
-    color: var(--text-muted);
-    font-size: 0.66rem;
-    font-weight: 700;
-    text-transform: uppercase;
 }
 
 /* DASHBOARD */
@@ -738,7 +710,7 @@ th {
 }
 
 /* ==========================================================================
-   22. JANELA MODAL FLUTUANTE
+   JANELA MODAL FLUTUANTE
    ========================================================================== */
 
 .modal-overlay {
@@ -812,11 +784,14 @@ th {
 }
 
 /* ==========================================================================
-   23. ALINHAMENTO E BOTÕES EMPILHADOS NA TABELA
+   ALINHAMENTO, ROLAGEM E BOTÕES EMPILHADOS NAS TABELAS
    ========================================================================== */
 
+/* Container da tabela com rolagem vertical automática e limite de altura */
 .table-container {
     width: 100% !important;
+    max-height: 400px !important; /* Limite de altura fixo para criar a barra de rolagem */
+    overflow-y: auto !important;   /* Habilita a barra de rolagem vertical */
     overflow-x: hidden !important;
     border: 1px solid var(--border-light);
     border-radius: 8px;
@@ -827,6 +802,19 @@ th {
     width: 100% !important;
     border-collapse: collapse !important;
     table-layout: fixed !important;
+}
+
+/* Cabeçalho fixo durante a rolagem */
+.table-container th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+    background: rgba(6, 22, 15, 0.98) !important;
+    color: var(--text-muted) !important;
+    font-size: 0.64rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* Distribuição harmônica das colunas */
@@ -844,15 +832,6 @@ th {
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     vertical-align: middle !important;
-}
-
-/* Estilização dos cabeçalhos */
-.table-container th {
-    background: rgba(0, 0, 0, 0.3) !important;
-    color: var(--text-muted) !important;
-    font-size: 0.64rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
 }
 
 /* Container de botões empilhados (Dar Saída em cima, Etiqueta embaixo) */
@@ -884,3 +863,22 @@ th {
 
 .btn-etiqueta { background: var(--primary-green) !important; }
 .btn-saida { background: var(--danger) !important; }
+
+/* ESTILIZAÇÃO DA BARRA DE ROLAGEM (SCROLLBAR) */
+.table-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: rgba(52, 211, 153, 0.3);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(52, 211, 153, 0.6);
+}
