@@ -580,7 +580,7 @@ img {
     display: grid;
     grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.8fr);
     gap: 20px;
-    align-items: start !important; /* Impede que o formulário estique junto com a tabela */
+    align-items: start !important;
 }
 
 .grid-3 {
@@ -785,15 +785,32 @@ img {
 }
 
 /* ==========================================================================
-   ALINHAMENTO, ROLAGEM E BOTÕES EMPILHADOS NAS TABELAS
+   ALINHAMENTO, ROLAGEM E ALTURA FIXA DO CARD "VISITANTES NO PRÉDIO"
    ========================================================================== */
 
-/* Container da tabela com rolagem vertical automática e altura máxima fixa */
+/* Trava a altura máxima do card da direita para equiparar com o formulário */
+.grid-2 > .card:nth-child(2) {
+    max-height: 525px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+/* Container da tabela com rolagem vertical automática e altura interna controlada */
+.grid-2 > .card:nth-child(2) .table-container {
+    width: 100% !important;
+    max-height: 400px !important; /* Limita a altura da lista e ativa a barra de rolagem */
+    overflow-y: auto !important;   /* Habilita a barra de rolagem vertical */
+    overflow-x: hidden !important;
+    flex-grow: 1 !important;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    background: rgba(4, 15, 10, 0.6);
+}
+
 .table-container {
     width: 100% !important;
-    max-height: 380px !important; /* Limite exato para exibir os registros com rolagem */
-    overflow-y: auto !important;   /* Ativa a barra de rolagem vertical */
-    overflow-x: hidden !important;
+    overflow-x: auto !important;
     border: 1px solid var(--border-light);
     border-radius: 8px;
     background: rgba(4, 15, 10, 0.6);
